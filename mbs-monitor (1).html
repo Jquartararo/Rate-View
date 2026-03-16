@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MBS Market Monitor</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg-primary: #ffffff;
+    --bg-secondary: #f5f5f3;
+    --bg-tertiary: #eeede9;
+    --text-primary: #1a1a18;
+    --text-secondary: #6b6b67;
+    --text-tertiary: #9b9b97;
+    --border-light: rgba(0,0,0,0.1);
+    --border-medium: rgba(0,0,0,0.18);
+    --color-up: #1D9E75;
+    --color-down: #D85A30;
+    --color-up-bg: #EAF3DE;
+    --color-up-text: #3B6D11;
+    --color-down-bg: #FAECE7;
+    --color-down-text: #993C1D;
+    --radius-md: 8px;
+    --radius-lg: 12px;
+    --font-sans: 'Georgia', -apple-system, sans-serif;
+    --font-mono: 'Courier New', monospace;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg-primary: #1c1c1a;
+      --bg-secondary: #252523;
+      --bg-tertiary: #2e2e2c;
+      --text-primary: #f0ede8;
+      --text-secondary: #9b9b97;
+      --text-tertiary: #6b6b67;
+      --border-light: rgba(255,255,255,0.1);
+      --border-medium: rgba(255,255,255,0.18);
+    }
+  }
+
+  body {
+    font-family: var(--font-sans);
+    background: var(--bg-tertiary);
+    color: var(--text-primary);
+    min-height: 100vh;
+    padding: 2rem 1rem;
+  }
+
+  .app { max-width: 960px; margin: 0 auto; }
+
+  /* Header */
+  .header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    margin-bottom: 1.75rem;
+    padding-bottom: 1.25rem;
+    border-bottom: 0.5px solid var(--border-light);
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .header-left h1 { font-size: 22px; font-weight: 500; letter-spacing: -0.02em; }
+  .header-left p { font-size: 13px; color: var(--text-secondary); margin-top: 4px; }
+  .header-right { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+  .last-updated { font-size: 12px; color: var(--text-tertiary); font-family: var(--font-mono); }
+
+  /* Buttons */
+  .btn {
+    padding: 7px 16px;
+    font-size: 13px;
+    border: 0.5px solid var(--border-medium);
+    border-radius: var(--radius-md);
+    background: transparent;
+    color: var(--text-primary);
+    cursor: pointer;
+    transition: background 0.15s;
+    font-family: var(--font-sans);
+  }
+  .btn:hover { background: var(--bg-secondary); }
+  .btn:active { transform: scale(0.98); }
+  .btn:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+  .btn-primary {
+    background: var(--text-primary);
+    color: var(--bg-primary);
+    border-color: var(--text-primary);
+  }
+  .btn-primary:hover { opacity: 0.85; background: var(--text-primary); }
+  .btn-sm { padding: 4px 11px; font-size: 12px; }
+  .btn-danger { border-color: var(--color-down); color: var(--color-down); }
+  .btn-danger:hover { background: var(--color-down-bg); }
+
+  /* Metrics */
+  .metrics-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 10px;
+    margin-bottom: 1.25rem;
+  }
+  @media (max-width: 640px) {
+    .metrics-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+  .metric-card {
+    background: var(--bg-secondary);
+    border-radius: var(--radius-md);
+    padding: 14px 16px;
+  }
+  .metric-label {
+    font-size: 11px;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-bottom: 6px;
+  }
+  .metric-value {
+    font-size: 22px;
+    font-weight: 500;
+    font-family: var(--font-mono);
+    line-height: 1;
+  }
+  .metric-sub { font-size: 12px; color: var(--text-secondary); margin-top: 4px; font-family: var(--font-mono); }
+  .up { color: var(--color-up); }
+  .down { color: var(--color-down); }
+  .flat { color: var(--text-secondary); }
+
+  /* Sections */
+  .section {
+    background: var(--bg-primary);
+    border: 0.5px solid var(--border-light);
+    border-radius: var(--radius-lg);
+    padding: 1rem 1.25rem;
+    margin-bottom: 1rem;
+  }
+  .section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 12px;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .section-title {
+    font-size: 11px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    color: var(--text-secondary);
+  }
+  .sources { font-size: 11px; color: var(--text-tertiary); }
+
+  /* Commentary */
+  .commentary-text { font-size: 14px; line-height: 1.75; }
+  .drivers { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+  .driver-tag {
+    font-size: 12px;
+    padding: 3px 10px;
+    border-radius: 100px;
+    background: var(--bg-secondary);
+    border: 0.5px solid var(--border-light);
+    color: var(--text-secondary);
+  }
+
+  /* Direction badge */
+  .direction-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 12px;
+    padding: 3px 10px;
+    border-radius: 100px;
+    font-weight: 500;
+  }
+  .direction-up { background: var(--color-up-bg); color: var(--color-up-text); }
+  .direction-down { background: var(--color-down-bg); color: var(--color-down-text); }
+  .direction-flat { background: var(--bg-secondary); color: var(--text-secondary); }
+
+  .trend-bar { height: 3px; border-radius: 2px; background: var(--bg-secondary); margin-top: 8px; overflow: hidden; }
+  .trend-fill { height: 100%; border-radius: 2px; transition: width 0.6s ease; }
+  .trend-fill-up { background: var(--color-up); }
+  .trend-fill-down { background: var(--color-down); }
+  .trend-fill-flat { background: var(--border-medium); }
+
+  /* Tabs */
+  .tab-bar {
+    display: flex;
+    border-bottom: 0.5px solid var(--border-light);
+    margin-bottom: 1.25rem;
+  }
+  .tab {
+    padding: 8px 16px;
+    font-size: 13px;
+    cursor: pointer;
+    border: none;
+    border-bottom: 2px solid transparent;
+    color: var(--text-secondary);
+    background: none;
+    font-family: var(--font-sans);
+    transition: color 0.15s;
+  }
+  .tab:hover { color: var(--text-primary); }
+  .tab.active { color: var(--text-primary); border-bottom-color: var(--text-primary); font-weight: 500; }
+
+  .panel { display: none; }
+  .panel.active { display: block; }
+
+  /* Update generator */
+  .update-controls { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 12px; }
+  .select-input {
+    padding: 7px 10px;
+    font-size: 13px;
+    border: 0.5px solid var(--border-medium);
+    border-radius: var(--radius-md);
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    cursor: pointer;
+    outline: none;
+    font-family: var(--font-sans);
+  }
+  .select-input:focus { border-color: var(--text-secondary); }
+  .update-output {
+    background: var(--bg-secondary);
+    border-radius: var(--radius-md);
+    padding: 14px 16px;
+    font-size: 13px;
+    line-height: 1.75;
+    white-space: pre-wrap;
+    min-height: 80px;
+    font-family: var(--font-sans);
+  }
+  .update-actions { display: flex; gap: 8px; margin-top: 10px; align-items: center; }
+  .copied-msg { font-size: 12px; color: var(--color-up); }
+
+  /* History table */
+  .history-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .history-table th {
+    text-align: left;
+    font-size: 11px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--text-secondary);
+    padding: 0 8px 8px 0;
+    border-bottom: 0.5px solid var(--border-light);
+  }
+  .history-table td {
+    padding: 9px 8px 9px 0;
+    border-bottom: 0.5px solid var(--border-light);
+    font-family: var(--font-mono);
+    font-size: 12px;
+    vertical-align: top;
+  }
+  .history-table tr:last-child td { border-bottom: none; }
+  .history-table .commentary-cell {
+    font-family: var(--font-sans);
+    font-size: 12px;
+    line-height: 1.5;
+    color: var(--text-secondary);
+    max-width: 280px;
+  }
+  .history-empty { text-align: center; padding: 2rem; color: var(--text-tertiary); font-size: 13px; }
+  .dir-pip { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 5px; }
+  .pip-up { background: var(--color-up); }
+  .pip-down { background: var(--color-down); }
+  .pip-flat { background: var(--border-medium); }
+  .history-actions { display: flex; gap: 8px; align-items: center; }
+  .history-count { font-size: 12px; color: var(--text-tertiary); font-family: var(--font-mono); }
+  .table-scroll { overflow-x: auto; }
+
+  /* Empty state */
+  .empty-state { text-align: center; padding: 2.5rem 1rem; color: var(--text-secondary); }
+  .empty-state .icon { font-size: 28px; opacity: 0.2; display: block; margin-bottom: 8px; }
+  .empty-state p { font-size: 14px; }
+
+  /* Spinner */
+  .spinner {
+    display: inline-block;
+    width: 14px; height: 14px;
+    border: 2px solid var(--border-light);
+    border-top-color: var(--text-primary);
+    border-radius: 50%;
+    animation: spin 0.6s linear infinite;
+    vertical-align: middle;
+    margin-right: 6px;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* API key notice */
+  .api-notice {
+    background: #FAEEDA;
+    border: 0.5px solid #FAC775;
+    border-radius: var(--radius-md);
+    padding: 12px 16px;
+    font-size: 13px;
+    line-height: 1.6;
+    color: #633806;
+    margin-bottom: 1.25rem;
+  }
+  .api-notice strong { font-weight: 500; }
+  .api-notice a { color: #854F0B; }
+  .api-key-row { display: flex; gap: 8px; margin-top: 10px; align-items: center; flex-wrap: wrap; }
+  .api-key-input {
+    flex: 1;
+    min-width: 200px;
+    padding: 7px 10px;
+    font-size: 13px;
+    border: 0.5px solid #FAC775;
+    border-radius: var(--radius-md);
+    background: #fff8ee;
+    color: #412402;
+    font-family: var(--font-mono);
+    outline: none;
+  }
+  .api-key-input:focus { border-color: #854F0B; }
+  .key-saved { font-size: 12px; color: var(--color-up); }
+</style>
+</head>
+<body>
+<div class="app">
+
+  <!-- API Key Setup -->
+  <div class="api-notice" id="apiNotice">
+    <strong>Setup required:</strong> This tool uses the Anthropic Claude API to fetch live MBS data and generate client updates.
+    Enter your API key below to get started. Get one free at <a href="https://console.anthropic.com" target="_blank">console.anthropic.com</a>.
+    Your key is stored only in your browser's local storage and never sent anywhere except Anthropic's API.
+    <div class="api-key-row">
+      <input type="password" class="api-key-input" id="apiKeyInput" placeholder="sk-ant-..." />
+      <button class="btn btn-primary" onclick="saveApiKey()">Save key</button>
+      <span class="key-saved" id="keySaved" style="display:none;">Key saved!</span>
+    </div>
+  </div>
+
+  <!-- Header -->
+  <div class="header">
+    <div class="header-left">
+      <h1>MBS Market Monitor</h1>
+      <p>Mortgage-backed securities pricing &amp; commentary</p>
+    </div>
+    <div class="header-right">
+      <span class="last-updated" id="lastUpdated">Not yet loaded</span>
+      <button class="btn btn-primary" id="refreshBtn" onclick="fetchMBSData()">Fetch live data</button>
+    </div>
+  </div>
+
+  <!-- Metrics -->
+  <div class="metrics-grid">
+    <div class="metric-card">
+      <div class="metric-label">30yr fixed rate</div>
+      <div class="metric-value" id="rate30yr">—</div>
+      <div class="metric-sub" id="rateChange">awaiting data</div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-label">Current coupon</div>
+      <div class="metric-value" id="currentCoupon">—</div>
+      <div class="metric-sub">current coupon</div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-label">Price change</div>
+      <div class="metric-value" id="priceChange">—</div>
+      <div class="metric-sub">in ticks / 32nds</div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-label">Market direction</div>
+      <div id="directionBadge" style="margin-top:4px;">
+        <span class="direction-badge direction-flat">Awaiting</span>
+      </div>
+      <div class="trend-bar"><div class="trend-fill trend-fill-flat" id="trendFill" style="width:50%"></div></div>
+    </div>
+  </div>
+
+  <!-- Tabs -->
+  <div class="tab-bar">
+    <button class="tab active" onclick="switchTab('commentary', this)">Commentary</button>
+    <button class="tab" onclick="switchTab('updates', this)">Client updates</button>
+    <button class="tab" onclick="switchTab('history', this)">History log <span id="historyBadge"></span></button>
+  </div>
+
+  <!-- Commentary Panel -->
+  <div id="panel-commentary" class="panel active">
+    <div class="section">
+      <div class="section-header">
+        <span class="section-title">Market Commentary</span>
+        <span id="commentarySource" class="sources"></span>
+      </div>
+      <div id="commentaryContent">
+        <div class="empty-state">
+          <span class="icon">◈</span>
+          <p>Press <strong>Fetch live data</strong> to pull current MBS pricing and commentary.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Client Updates Panel -->
+  <div id="panel-updates" class="panel">
+    <div class="section">
+      <div class="section-header"><span class="section-title">Client Update Generator</span></div>
+      <div class="update-controls">
+        <select class="select-input" id="audience">
+          <option value="clients">Retail clients</option>
+          <option value="partners">Business partners</option>
+          <option value="brokers">Mortgage brokers</option>
+          <option value="investors">Investors</option>
+        </select>
+        <select class="select-input" id="tone">
+          <option value="professional">Professional</option>
+          <option value="concise">Concise bullet points</option>
+          <option value="detailed">Detailed analysis</option>
+          <option value="casual">Conversational</option>
+        </select>
+        <select class="select-input" id="format">
+          <option value="email">Email</option>
+          <option value="text">Text/SMS</option>
+          <option value="slack">Slack/Teams message</option>
+        </select>
+        <button class="btn" id="generateBtn" onclick="generateUpdate()" disabled>Generate update ↗</button>
+      </div>
+      <div id="updateOutput" class="update-output" style="display:none;"></div>
+      <div class="update-actions" id="updateActions" style="display:none;">
+        <button class="btn" onclick="copyUpdate()">Copy to clipboard</button>
+        <span class="copied-msg" id="copiedMsg" style="display:none;">Copied!</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- History Panel -->
+  <div id="panel-history" class="panel">
+    <div class="section">
+      <div class="section-header">
+        <span class="section-title">History Log</span>
+        <div class="history-actions">
+          <span class="history-count" id="historyCount">0 entries</span>
+          <button class="btn btn-sm btn-danger" onclick="clearHistory()" id="clearBtn" style="display:none;">Clear log</button>
+        </div>
+      </div>
+      <div id="historyContainer">
+        <div class="history-empty">No history yet. Fetch data to start logging entries.</div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- end .app -->
+
+<script>
+  /* ── API KEY ── */
+  let API_KEY = localStorage.getItem('mbs_api_key') || '';
+
+  function saveApiKey() {
+    const val = document.getElementById('apiKeyInput').value.trim();
+    if (!val.startsWith('sk-ant-')) { alert('Please enter a valid Anthropic API key (starts with sk-ant-).'); return; }
+    API_KEY = val;
+    localStorage.setItem('mbs_api_key', val);
+    const msg = document.getElementById('keySaved');
+    msg.style.display = 'inline';
+    setTimeout(() => { msg.style.display = 'none'; }, 2500);
+    document.getElementById('apiNotice').style.background = '#EAF3DE';
+    document.getElementById('apiNotice').style.borderColor = '#9FE1CB';
+    document.getElementById('apiNotice').style.color = '#085041';
+  }
+
+  // Pre-fill if key already saved
+  if (API_KEY) {
+    document.getElementById('apiKeyInput').value = API_KEY;
+    document.getElementById('apiNotice').style.background = '#EAF3DE';
+    document.getElementById('apiNotice').style.borderColor = '#9FE1CB';
+    document.getElementById('apiNotice').style.color = '#085041';
+  }
+
+  /* ── STATE ── */
+  let mbsData = null;
+  let updateText = '';
+  let historyLog = JSON.parse(localStorage.getItem('mbs_history') || '[]');
+
+  // Render history on load if it exists
+  if (historyLog.length > 0) {
+    renderHistory();
+    document.getElementById('historyBadge').textContent = '(' + historyLog.length + ')';
+  }
+
+  /* ── TABS ── */
+  function switchTab(name, el) {
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+    el.classList.add('active');
+    document.getElementById('panel-' + name).classList.add('active');
+  }
+
+  /* ── FETCH DATA ── */
+  async function fetchMBSData() {
+    if (!API_KEY) { alert('Please enter your Anthropic API key first.'); return; }
+    const btn = document.getElementById('refreshBtn');
+    btn.disabled = true;
+    btn.innerHTML = '<span class="spinner"></span>Fetching...';
+    const today = new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+    try {
+      const res = await fetch('https://api.anthropic.com/v1/messages', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-api-key': API_KEY,
+          'anthropic-version': '2023-06-01',
+          'anthropic-dangerous-direct-browser-access': 'true'
+        },
+        body: JSON.stringify({
+          model: 'claude-sonnet-4-20250514',
+          max_tokens: 1000,
+          tools: [{ type: 'web_search_20250305', name: 'web_search' }],
+          system: `You are a financial data analyst. Search the web for current MBS market data. Today is ${today}. Return ONLY valid JSON, no markdown fences, no preamble.`,
+          messages: [{ role: 'user', content: `Search for current MBS market pricing and commentary today (${today}). Check Mortgage News Daily, MBS Live, and financial news sites. Return ONLY this JSON (no markdown, no explanation):
+{"thirtyYearRate":"X.XX%","rateChangeBps":"+X bps","currentCoupon":"X.XX%","priceChange":"+X/32","marketDirection":"improving","commentary":"2-3 sentence summary of today MBS market action","keyDrivers":["driver1","driver2","driver3"],"sourceDate":"today date","sources":["source1","source2"]}` }]
+        })
+      });
+      if (!res.ok) {
+        const err = await res.json();
+        throw new Error(err.error?.message || 'API error ' + res.status);
+      }
+      const data = await res.json();
+      let jsonText = (data.content || []).filter(b => b.type === 'text').map(b => b.text).join('');
+      jsonText = jsonText.replace(/```json|```/g, '').trim();
+      const fb = jsonText.indexOf('{'), lb = jsonText.lastIndexOf('}');
+      if (fb !== -1 && lb !== -1) jsonText = jsonText.slice(fb, lb + 1);
+      mbsData = JSON.parse(jsonText);
+      renderData(mbsData);
+      addToHistory(mbsData);
+      document.getElementById('generateBtn').disabled = false;
+    } catch(e) {
+      showError('Error: ' + e.message);
+      console.error(e);
+    }
+    btn.disabled = false;
+    btn.textContent = 'Refresh data';
+  }
+
+  /* ── RENDER METRICS ── */
+  function renderData(d) {
+    const now = new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+    document.getElementById('lastUpdated').textContent = 'Updated ' + now;
+    document.getElementById('rate30yr').textContent = d.thirtyYearRate || '—';
+    const rateChange = document.getElementById('rateChange');
+    const bps = d.rateChangeBps || '';
+    if (bps.startsWith('+')) { rateChange.className = 'metric-sub down'; rateChange.textContent = bps + ' (rates up)'; }
+    else if (bps.startsWith('-')) { rateChange.className = 'metric-sub up'; rateChange.textContent = bps + ' (rates dn)'; }
+    else { rateChange.className = 'metric-sub flat'; rateChange.textContent = bps; }
+    document.getElementById('currentCoupon').textContent = d.currentCoupon || '—';
+    const pc = document.getElementById('priceChange');
+    const pval = d.priceChange || '—';
+    pc.textContent = pval;
+    pc.className = pval.startsWith('+') ? 'metric-value up' : pval.startsWith('-') ? 'metric-value down' : 'metric-value flat';
+    const dir = (d.marketDirection || 'flat').toLowerCase();
+    const dirBadge = document.getElementById('directionBadge');
+    const fill = document.getElementById('trendFill');
+    if (dir === 'improving') {
+      dirBadge.innerHTML = '<span class="direction-badge direction-up">↑ Improving</span>';
+      fill.className = 'trend-fill trend-fill-up'; fill.style.width = '75%';
+    } else if (dir === 'worsening') {
+      dirBadge.innerHTML = '<span class="direction-badge direction-down">↓ Worsening</span>';
+      fill.className = 'trend-fill trend-fill-down'; fill.style.width = '25%';
+    } else {
+      dirBadge.innerHTML = '<span class="direction-badge direction-flat">→ Flat</span>';
+      fill.className = 'trend-fill trend-fill-flat'; fill.style.width = '50%';
+    }
+    const drivers = (d.keyDrivers || []).map(k => `<span class="driver-tag">${k}</span>`).join('');
+    document.getElementById('commentaryContent').innerHTML =
+      `<p class="commentary-text">${d.commentary || ''}</p><div class="drivers">${drivers}</div>`;
+    const srcDate = d.sourceDate ? ' · ' + d.sourceDate : '';
+    document.getElementById('commentarySource').textContent = ((d.sources || []).join(', ')) + srcDate;
+  }
+
+  function showError(msg) {
+    document.getElementById('commentaryContent').innerHTML =
+      `<div class="empty-state"><span class="icon">⚠</span><p style="color:var(--color-down)">${msg}</p></div>`;
+  }
+
+  /* ── HISTORY ── */
+  function addToHistory(d) {
+    const now = new Date();
+    const entry = {
+      timestamp: now.toLocaleString('en-US', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' }),
+      rate: d.thirtyYearRate || '—',
+      rateChange: d.rateChangeBps || '—',
+      coupon: d.currentCoupon || '—',
+      price: d.priceChange || '—',
+      direction: (d.marketDirection || 'flat').toLowerCase(),
+      commentary: d.commentary || '',
+      drivers: (d.keyDrivers || []).join(', ')
+    };
+    historyLog.unshift(entry);
+    // Keep last 100 entries
+    if (historyLog.length > 100) historyLog = historyLog.slice(0, 100);
+    localStorage.setItem('mbs_history', JSON.stringify(historyLog));
+    renderHistory();
+    document.getElementById('historyBadge').textContent = '(' + historyLog.length + ')';
+  }
+
+  function renderHistory() {
+    const container = document.getElementById('historyContainer');
+    const count = document.getElementById('historyCount');
+    const clearBtn = document.getElementById('clearBtn');
+    count.textContent = historyLog.length + (historyLog.length === 1 ? ' entry' : ' entries');
+    if (historyLog.length === 0) {
+      container.innerHTML = '<div class="history-empty">No history yet. Fetch data to start logging entries.</div>';
+      clearBtn.style.display = 'none';
+      return;
+    }
+    clearBtn.style.display = '';
+    const rows = historyLog.map(e => {
+      const pipClass = e.direction === 'improving' ? 'pip-up' : e.direction === 'worsening' ? 'pip-down' : 'pip-flat';
+      const rateClass = e.rateChange.startsWith('+') ? 'down' : e.rateChange.startsWith('-') ? 'up' : 'flat';
+      const priceClass = e.price.startsWith('+') ? 'up' : e.price.startsWith('-') ? 'down' : 'flat';
+      const snippet = e.commentary.length > 110 ? e.commentary.slice(0, 110) + '…' : e.commentary;
+      return `<tr>
+        <td style="white-space:nowrap; color:var(--text-secondary);">${e.timestamp}</td>
+        <td>${e.rate}</td>
+        <td class="${rateClass}">${e.rateChange}</td>
+        <td>${e.coupon}</td>
+        <td class="${priceClass}">${e.price}</td>
+        <td><span class="dir-pip ${pipClass}"></span>${e.direction.charAt(0).toUpperCase() + e.direction.slice(1)}</td>
+        <td class="commentary-cell">${snippet}</td>
+      </tr>`;
+    }).join('');
+    container.innerHTML = `<div class="table-scroll">
+      <table class="history-table">
+        <thead><tr>
+          <th>Time</th><th>30yr rate</th><th>Change</th><th>Coupon</th><th>Price chg</th><th>Direction</th><th>Commentary</th>
+        </tr></thead>
+        <tbody>${rows}</tbody>
+      </table>
+    </div>`;
+  }
+
+  function clearHistory() {
+    if (!confirm('Clear all history entries? This cannot be undone.')) return;
+    historyLog = [];
+    localStorage.removeItem('mbs_history');
+    renderHistory();
+    document.getElementById('historyBadge').textContent = '';
+  }
+
+  /* ── CLIENT UPDATE GENERATOR ── */
+  async function generateUpdate() {
+    if (!mbsData || !API_KEY) return;
+    const btn = document.getElementById('generateBtn');
+    btn.disabled = true;
+    btn.innerHTML = '<span class="spinner"></span>Generating...';
+    const outputEl = document.getElementById('updateOutput');
+    outputEl.style.display = 'block';
+    outputEl.textContent = 'Generating your update...';
+    const audienceMap = { clients: 'retail mortgage clients', partners: 'business partners', brokers: 'mortgage brokers', investors: 'real estate investors' };
+    const toneMap = { professional: 'professional and informative', concise: 'concise with bullet points', detailed: 'detailed with analysis', casual: 'conversational and approachable' };
+    const formatMap = { email: 'email (include a subject line)', text: 'short SMS/text message under 160 chars', slack: 'Slack/Teams message with brief formatting' };
+    const audience = document.getElementById('audience').value;
+    const tone = document.getElementById('tone').value;
+    const format = document.getElementById('format').value;
+    try {
+      const res = await fetch('https://api.anthropic.com/v1/messages', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-api-key': API_KEY,
+          'anthropic-version': '2023-06-01',
+          'anthropic-dangerous-direct-browser-access': 'true'
+        },
+        body: JSON.stringify({
+          model: 'claude-sonnet-4-20250514',
+          max_tokens: 1000,
+          system: 'You are a mortgage market analyst writing client communications. Write clearly and professionally.',
+          messages: [{ role: 'user', content: `Write a ${formatMap[format]} for ${audienceMap[audience]} in a ${toneMap[tone]} tone using this MBS data:\n\n30-yr Fixed: ${mbsData.thirtyYearRate} (${mbsData.rateChangeBps})\nMBS Price Change: ${mbsData.priceChange}\nDirection: ${mbsData.marketDirection}\nCommentary: ${mbsData.commentary}\nKey Drivers: ${(mbsData.keyDrivers||[]).join(', ')}\nAs of: ${mbsData.sourceDate}` }]
+        })
+      });
+      const data = await res.json();
+      updateText = (data.content || []).filter(b => b.type === 'text').map(b => b.text).join('');
+      outputEl.textContent = updateText;
+      document.getElementById('updateActions').style.display = 'flex';
+    } catch(e) {
+      outputEl.textContent = 'Failed to generate update: ' + e.message;
+    }
+    btn.disabled = false;
+    btn.textContent = 'Regenerate ↗';
+  }
+
+  function copyUpdate() {
+    if (!updateText) return;
+    navigator.clipboard.writeText(updateText).then(() => {
+      const msg = document.getElementById('copiedMsg');
+      msg.style.display = 'inline';
+      setTimeout(() => { msg.style.display = 'none'; }, 2000);
+    });
+  }
+</script>
+</body>
+</html>
