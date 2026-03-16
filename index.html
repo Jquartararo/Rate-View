@@ -24,7 +24,7 @@
     --color-down-text: #993C1D;
     --radius-md: 8px;
     --radius-lg: 12px;
-    --font-sans: 'Georgia', -apple-system, sans-serif;
+    --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
     --font-mono: 'Courier New', monospace;
   }
 
@@ -41,289 +41,113 @@
     }
   }
 
-  body {
-    font-family: var(--font-sans);
-    background: var(--bg-tertiary);
-    color: var(--text-primary);
-    min-height: 100vh;
-    padding: 2rem 1rem;
-  }
+  body { font-family: var(--font-sans); background: var(--bg-tertiary); color: var(--text-primary); min-height: 100vh; padding: 2rem 1rem; }
+  .app { max-width: 980px; margin: 0 auto; }
 
-  .app { max-width: 960px; margin: 0 auto; }
-
-  /* Header */
-  .header {
-    display: flex;
-    align-items: flex-end;
-    justify-content: space-between;
-    margin-bottom: 1.75rem;
-    padding-bottom: 1.25rem;
-    border-bottom: 0.5px solid var(--border-light);
-    flex-wrap: wrap;
-    gap: 12px;
-  }
+  .header { display: flex; align-items: flex-end; justify-content: space-between; margin-bottom: 1.75rem; padding-bottom: 1.25rem; border-bottom: 0.5px solid var(--border-light); flex-wrap: wrap; gap: 12px; }
   .header-left h1 { font-size: 22px; font-weight: 500; letter-spacing: -0.02em; }
   .header-left p { font-size: 13px; color: var(--text-secondary); margin-top: 4px; }
   .header-right { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
   .last-updated { font-size: 12px; color: var(--text-tertiary); font-family: var(--font-mono); }
 
-  /* Buttons */
-  .btn {
-    padding: 7px 16px;
-    font-size: 13px;
-    border: 0.5px solid var(--border-medium);
-    border-radius: var(--radius-md);
-    background: transparent;
-    color: var(--text-primary);
-    cursor: pointer;
-    transition: background 0.15s;
-    font-family: var(--font-sans);
-  }
+  .btn { padding: 7px 16px; font-size: 13px; border: 0.5px solid var(--border-medium); border-radius: var(--radius-md); background: transparent; color: var(--text-primary); cursor: pointer; transition: background 0.15s; font-family: var(--font-sans); }
   .btn:hover { background: var(--bg-secondary); }
   .btn:active { transform: scale(0.98); }
   .btn:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
-  .btn-primary {
-    background: var(--text-primary);
-    color: var(--bg-primary);
-    border-color: var(--text-primary);
-  }
+  .btn-primary { background: var(--text-primary); color: var(--bg-primary); border-color: var(--text-primary); }
   .btn-primary:hover { opacity: 0.85; background: var(--text-primary); }
   .btn-sm { padding: 4px 11px; font-size: 12px; }
   .btn-danger { border-color: var(--color-down); color: var(--color-down); }
   .btn-danger:hover { background: var(--color-down-bg); }
 
-  /* Metrics */
-  .metrics-grid {
-    display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: 10px;
-    margin-bottom: 1.25rem;
-  }
-  @media (max-width: 640px) {
-    .metrics-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  }
-  .metric-card {
-    background: var(--bg-secondary);
-    border-radius: var(--radius-md);
-    padding: 14px 16px;
-  }
-  .metric-label {
-    font-size: 11px;
-    color: var(--text-secondary);
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-    margin-bottom: 6px;
-  }
-  .metric-value {
-    font-size: 22px;
-    font-weight: 500;
-    font-family: var(--font-mono);
-    line-height: 1;
-  }
-  .metric-sub { font-size: 12px; color: var(--text-secondary); margin-top: 4px; font-family: var(--font-mono); }
+  .metrics-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; margin-bottom: 10px; }
+  @media (max-width: 640px) { .metrics-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  .metric-card { background: var(--bg-secondary); border-radius: var(--radius-md); padding: 14px 16px; }
+  .metric-label { font-size: 11px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 6px; }
+  .metric-value { font-size: 22px; font-weight: 500; font-family: var(--font-mono); line-height: 1; }
+  .metric-sub { font-size: 11px; color: var(--text-secondary); margin-top: 4px; font-family: var(--font-mono); line-height: 1.4; }
+  .metric-timeframe { font-size: 10px; color: var(--text-tertiary); margin-top: 3px; }
   .up { color: var(--color-up); }
   .down { color: var(--color-down); }
   .flat { color: var(--text-secondary); }
 
-  /* Sections */
-  .section {
-    background: var(--bg-primary);
-    border: 0.5px solid var(--border-light);
-    border-radius: var(--radius-lg);
-    padding: 1rem 1.25rem;
-    margin-bottom: 1rem;
-  }
-  .section-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 12px;
-    flex-wrap: wrap;
-    gap: 8px;
-  }
-  .section-title {
-    font-size: 11px;
-    font-weight: 500;
-    text-transform: uppercase;
-    letter-spacing: 0.07em;
-    color: var(--text-secondary);
-  }
-  .sources { font-size: 11px; color: var(--text-tertiary); }
+  .coupon-section { background: var(--bg-primary); border: 0.5px solid var(--border-light); border-radius: var(--radius-lg); padding: 1rem 1.25rem; margin-bottom: 10px; }
+  .coupon-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; margin-top: 8px; }
+  @media (max-width: 580px) { .coupon-grid { grid-template-columns: 1fr; } }
+  .coupon-card { background: var(--bg-secondary); border-radius: var(--radius-md); padding: 12px 15px; border: 0.5px solid var(--border-light); }
+  .coupon-badge { font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-secondary); margin-bottom: 6px; display: flex; align-items: center; gap: 5px; }
+  .active-dot { display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: var(--color-up); flex-shrink: 0; }
+  .coupon-price { font-size: 20px; font-weight: 500; font-family: var(--font-mono); line-height: 1; }
+  .coupon-change { font-size: 11px; font-family: var(--font-mono); margin-top: 4px; }
+  .coupon-timeframe { font-size: 10px; color: var(--text-tertiary); margin-top: 2px; }
+  .coupon-label { font-size: 10px; color: var(--text-tertiary); margin-top: 2px; }
 
-  /* Commentary */
+  .section { background: var(--bg-primary); border: 0.5px solid var(--border-light); border-radius: var(--radius-lg); padding: 1rem 1.25rem; margin-bottom: 1rem; }
+  .section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; flex-wrap: wrap; gap: 8px; }
+  .section-title { font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.07em; color: var(--text-secondary); }
+  .sources { font-size: 11px; color: var(--text-tertiary); }
   .commentary-text { font-size: 14px; line-height: 1.75; }
   .drivers { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
-  .driver-tag {
-    font-size: 12px;
-    padding: 3px 10px;
-    border-radius: 100px;
-    background: var(--bg-secondary);
-    border: 0.5px solid var(--border-light);
-    color: var(--text-secondary);
-  }
+  .driver-tag { font-size: 12px; padding: 3px 10px; border-radius: 100px; background: var(--bg-secondary); border: 0.5px solid var(--border-light); color: var(--text-secondary); }
 
-  /* Direction badge */
-  .direction-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 5px;
-    font-size: 12px;
-    padding: 3px 10px;
-    border-radius: 100px;
-    font-weight: 500;
-  }
+  .direction-badge { display: inline-flex; align-items: center; gap: 5px; font-size: 12px; padding: 3px 10px; border-radius: 100px; font-weight: 500; }
   .direction-up { background: var(--color-up-bg); color: var(--color-up-text); }
   .direction-down { background: var(--color-down-bg); color: var(--color-down-text); }
   .direction-flat { background: var(--bg-secondary); color: var(--text-secondary); }
-
   .trend-bar { height: 3px; border-radius: 2px; background: var(--bg-secondary); margin-top: 8px; overflow: hidden; }
   .trend-fill { height: 100%; border-radius: 2px; transition: width 0.6s ease; }
   .trend-fill-up { background: var(--color-up); }
   .trend-fill-down { background: var(--color-down); }
   .trend-fill-flat { background: var(--border-medium); }
 
-  /* Tabs */
-  .tab-bar {
-    display: flex;
-    border-bottom: 0.5px solid var(--border-light);
-    margin-bottom: 1.25rem;
-  }
-  .tab {
-    padding: 8px 16px;
-    font-size: 13px;
-    cursor: pointer;
-    border: none;
-    border-bottom: 2px solid transparent;
-    color: var(--text-secondary);
-    background: none;
-    font-family: var(--font-sans);
-    transition: color 0.15s;
-  }
+  .tab-bar { display: flex; border-bottom: 0.5px solid var(--border-light); margin-bottom: 1.25rem; }
+  .tab { padding: 8px 16px; font-size: 13px; cursor: pointer; border: none; border-bottom: 2px solid transparent; color: var(--text-secondary); background: none; font-family: var(--font-sans); transition: color 0.15s; }
   .tab:hover { color: var(--text-primary); }
   .tab.active { color: var(--text-primary); border-bottom-color: var(--text-primary); font-weight: 500; }
-
   .panel { display: none; }
   .panel.active { display: block; }
 
-  /* Update generator */
   .update-controls { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 12px; }
-  .select-input {
-    padding: 7px 10px;
-    font-size: 13px;
-    border: 0.5px solid var(--border-medium);
-    border-radius: var(--radius-md);
-    background: var(--bg-primary);
-    color: var(--text-primary);
-    cursor: pointer;
-    outline: none;
-    font-family: var(--font-sans);
-  }
-  .select-input:focus { border-color: var(--text-secondary); }
-  .update-output {
-    background: var(--bg-secondary);
-    border-radius: var(--radius-md);
-    padding: 14px 16px;
-    font-size: 13px;
-    line-height: 1.75;
-    white-space: pre-wrap;
-    min-height: 80px;
-    font-family: var(--font-sans);
-  }
+  .select-input { padding: 7px 10px; font-size: 13px; border: 0.5px solid var(--border-medium); border-radius: var(--radius-md); background: var(--bg-primary); color: var(--text-primary); cursor: pointer; outline: none; font-family: var(--font-sans); }
+  .update-output { background: var(--bg-secondary); border-radius: var(--radius-md); padding: 14px 16px; font-size: 13px; line-height: 1.75; white-space: pre-wrap; min-height: 80px; }
   .update-actions { display: flex; gap: 8px; margin-top: 10px; align-items: center; }
   .copied-msg { font-size: 12px; color: var(--color-up); }
 
-  /* History table */
-  .history-table { width: 100%; border-collapse: collapse; font-size: 13px; }
-  .history-table th {
-    text-align: left;
-    font-size: 11px;
-    font-weight: 500;
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-    color: var(--text-secondary);
-    padding: 0 8px 8px 0;
-    border-bottom: 0.5px solid var(--border-light);
-  }
-  .history-table td {
-    padding: 9px 8px 9px 0;
-    border-bottom: 0.5px solid var(--border-light);
-    font-family: var(--font-mono);
-    font-size: 12px;
-    vertical-align: top;
-  }
+  .history-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+  .history-table th { text-align: left; font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-secondary); padding: 0 8px 8px 0; border-bottom: 0.5px solid var(--border-light); white-space: nowrap; }
+  .history-table td { padding: 9px 8px 9px 0; border-bottom: 0.5px solid var(--border-light); font-family: var(--font-mono); font-size: 11px; vertical-align: top; }
   .history-table tr:last-child td { border-bottom: none; }
-  .history-table .commentary-cell {
-    font-family: var(--font-sans);
-    font-size: 12px;
-    line-height: 1.5;
-    color: var(--text-secondary);
-    max-width: 280px;
-  }
-  .history-empty { text-align: center; padding: 2rem; color: var(--text-tertiary); font-size: 13px; }
-  .dir-pip { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 5px; }
+  .commentary-cell { font-family: var(--font-sans) !important; font-size: 11px !important; line-height: 1.5; color: var(--text-secondary); max-width: 220px; }
+  .history-empty { text-align: center; padding: 1.5rem; color: var(--text-tertiary); font-size: 13px; }
+  .history-actions { display: flex; gap: 8px; align-items: center; }
+  .history-count { font-size: 12px; color: var(--text-tertiary); font-family: var(--font-mono); }
+  .dir-pip { display: inline-block; width: 7px; height: 7px; border-radius: 50%; margin-right: 4px; }
   .pip-up { background: var(--color-up); }
   .pip-down { background: var(--color-down); }
   .pip-flat { background: var(--border-medium); }
-  .history-actions { display: flex; gap: 8px; align-items: center; }
-  .history-count { font-size: 12px; color: var(--text-tertiary); font-family: var(--font-mono); }
   .table-scroll { overflow-x: auto; }
 
-  /* Empty state */
   .empty-state { text-align: center; padding: 2.5rem 1rem; color: var(--text-secondary); }
   .empty-state .icon { font-size: 28px; opacity: 0.2; display: block; margin-bottom: 8px; }
   .empty-state p { font-size: 14px; }
 
-  /* Spinner */
-  .spinner {
-    display: inline-block;
-    width: 14px; height: 14px;
-    border: 2px solid var(--border-light);
-    border-top-color: var(--text-primary);
-    border-radius: 50%;
-    animation: spin 0.6s linear infinite;
-    vertical-align: middle;
-    margin-right: 6px;
-  }
+  .spinner { display: inline-block; width: 14px; height: 14px; border: 2px solid var(--border-light); border-top-color: var(--text-primary); border-radius: 50%; animation: spin 0.6s linear infinite; vertical-align: middle; margin-right: 6px; }
   @keyframes spin { to { transform: rotate(360deg); } }
 
-  /* API key notice */
-  .api-notice {
-    background: #FAEEDA;
-    border: 0.5px solid #FAC775;
-    border-radius: var(--radius-md);
-    padding: 12px 16px;
-    font-size: 13px;
-    line-height: 1.6;
-    color: #633806;
-    margin-bottom: 1.25rem;
-  }
-  .api-notice strong { font-weight: 500; }
+  .api-notice { background: #FAEEDA; border: 0.5px solid #FAC775; border-radius: var(--radius-md); padding: 12px 16px; font-size: 13px; line-height: 1.6; color: #633806; margin-bottom: 1.25rem; }
   .api-notice a { color: #854F0B; }
   .api-key-row { display: flex; gap: 8px; margin-top: 10px; align-items: center; flex-wrap: wrap; }
-  .api-key-input {
-    flex: 1;
-    min-width: 200px;
-    padding: 7px 10px;
-    font-size: 13px;
-    border: 0.5px solid #FAC775;
-    border-radius: var(--radius-md);
-    background: #fff8ee;
-    color: #412402;
-    font-family: var(--font-mono);
-    outline: none;
-  }
-  .api-key-input:focus { border-color: #854F0B; }
+  .api-key-input { flex: 1; min-width: 200px; padding: 7px 10px; font-size: 13px; border: 0.5px solid #FAC775; border-radius: var(--radius-md); background: #fff8ee; color: #412402; font-family: var(--font-mono); outline: none; }
   .key-saved { font-size: 12px; color: var(--color-up); }
 </style>
 </head>
 <body>
 <div class="app">
 
-  <!-- API Key Setup -->
   <div class="api-notice" id="apiNotice">
-    <strong>Setup required:</strong> This tool uses the Anthropic Claude API to fetch live MBS data and generate client updates.
-    Enter your API key below to get started. Get one free at <a href="https://console.anthropic.com" target="_blank">console.anthropic.com</a>.
-    Your key is stored only in your browser's local storage and never sent anywhere except Anthropic's API.
+    <strong>Setup required:</strong> This tool uses the Anthropic Claude API. Enter your API key to get started.
+    Get one free at <a href="https://console.anthropic.com" target="_blank">console.anthropic.com</a>.
+    Your key is stored only in your browser's local storage.
     <div class="api-key-row">
       <input type="password" class="api-key-input" id="apiKeyInput" placeholder="sk-ant-..." />
       <button class="btn btn-primary" onclick="saveApiKey()">Save key</button>
@@ -331,7 +155,6 @@
     </div>
   </div>
 
-  <!-- Header -->
   <div class="header">
     <div class="header-left">
       <h1>MBS Market Monitor</h1>
@@ -343,40 +166,68 @@
     </div>
   </div>
 
-  <!-- Metrics -->
   <div class="metrics-grid">
     <div class="metric-card">
       <div class="metric-label">30yr fixed rate</div>
       <div class="metric-value" id="rate30yr">—</div>
       <div class="metric-sub" id="rateChange">awaiting data</div>
+      <div class="metric-timeframe" id="rateTimeframe"></div>
     </div>
     <div class="metric-card">
       <div class="metric-label">Current coupon</div>
       <div class="metric-value" id="currentCoupon">—</div>
-      <div class="metric-sub">current coupon</div>
+      <div class="metric-sub" id="couponChangeSub">awaiting data</div>
+      <div class="metric-timeframe" id="couponTimeframe"></div>
     </div>
     <div class="metric-card">
       <div class="metric-label">Price change</div>
       <div class="metric-value" id="priceChange">—</div>
       <div class="metric-sub">in ticks / 32nds</div>
+      <div class="metric-timeframe" id="priceTimeframe"></div>
     </div>
     <div class="metric-card">
       <div class="metric-label">Market direction</div>
-      <div id="directionBadge" style="margin-top:4px;">
-        <span class="direction-badge direction-flat">Awaiting</span>
-      </div>
+      <div id="directionBadge" style="margin-top:4px;"><span class="direction-badge direction-flat">Awaiting</span></div>
       <div class="trend-bar"><div class="trend-fill trend-fill-flat" id="trendFill" style="width:50%"></div></div>
     </div>
   </div>
 
-  <!-- Tabs -->
+  <div class="coupon-section">
+    <div class="section-header" style="margin-bottom:4px;">
+      <span class="section-title">MBS Coupon Pricing</span>
+      <span class="sources" id="couponSource"></span>
+    </div>
+    <div class="coupon-grid">
+      <div class="coupon-card">
+        <div class="coupon-badge"><span class="active-dot"></span>5.00% coupon</div>
+        <div class="coupon-price" id="price-500">—</div>
+        <div class="coupon-change flat" id="change-500">awaiting data</div>
+        <div class="coupon-timeframe" id="tf-500"></div>
+        <div class="coupon-label" id="label-500"></div>
+      </div>
+      <div class="coupon-card">
+        <div class="coupon-badge"><span class="active-dot"></span>5.50% coupon</div>
+        <div class="coupon-price" id="price-550">—</div>
+        <div class="coupon-change flat" id="change-550">awaiting data</div>
+        <div class="coupon-timeframe" id="tf-550"></div>
+        <div class="coupon-label" id="label-550"></div>
+      </div>
+      <div class="coupon-card">
+        <div class="coupon-badge" id="curCouponLabel">Current coupon</div>
+        <div class="coupon-price" id="price-cur">—</div>
+        <div class="coupon-change flat" id="change-cur">awaiting data</div>
+        <div class="coupon-timeframe" id="tf-cur"></div>
+        <div class="coupon-label" id="label-cur"></div>
+      </div>
+    </div>
+  </div>
+
   <div class="tab-bar">
     <button class="tab active" onclick="switchTab('commentary', this)">Commentary</button>
     <button class="tab" onclick="switchTab('updates', this)">Client updates</button>
     <button class="tab" onclick="switchTab('history', this)">History log <span id="historyBadge"></span></button>
   </div>
 
-  <!-- Commentary Panel -->
   <div id="panel-commentary" class="panel active">
     <div class="section">
       <div class="section-header">
@@ -384,15 +235,11 @@
         <span id="commentarySource" class="sources"></span>
       </div>
       <div id="commentaryContent">
-        <div class="empty-state">
-          <span class="icon">◈</span>
-          <p>Press <strong>Fetch live data</strong> to pull current MBS pricing and commentary.</p>
-        </div>
+        <div class="empty-state"><span class="icon">◈</span><p>Press <strong>Fetch live data</strong> to pull current MBS pricing and commentary.</p></div>
       </div>
     </div>
   </div>
 
-  <!-- Client Updates Panel -->
   <div id="panel-updates" class="panel">
     <div class="section">
       <div class="section-header"><span class="section-title">Client Update Generator</span></div>
@@ -424,7 +271,6 @@
     </div>
   </div>
 
-  <!-- History Panel -->
   <div id="panel-history" class="panel">
     <div class="section">
       <div class="section-header">
@@ -434,51 +280,36 @@
           <button class="btn btn-sm btn-danger" onclick="clearHistory()" id="clearBtn" style="display:none;">Clear log</button>
         </div>
       </div>
-      <div id="historyContainer">
-        <div class="history-empty">No history yet. Fetch data to start logging entries.</div>
-      </div>
+      <div id="historyContainer"><div class="history-empty">No history yet. Fetch data to start logging entries.</div></div>
     </div>
   </div>
 
-</div><!-- end .app -->
+</div>
 
 <script>
-  /* ── API KEY ── */
   let API_KEY = localStorage.getItem('mbs_api_key') || '';
+  let mbsData = null;
+  let updateText = '';
+  let historyLog = JSON.parse(localStorage.getItem('mbs_history') || '[]');
 
   function saveApiKey() {
     const val = document.getElementById('apiKeyInput').value.trim();
     if (!val.startsWith('sk-ant-')) { alert('Please enter a valid Anthropic API key (starts with sk-ant-).'); return; }
     API_KEY = val;
     localStorage.setItem('mbs_api_key', val);
-    const msg = document.getElementById('keySaved');
-    msg.style.display = 'inline';
-    setTimeout(() => { msg.style.display = 'none'; }, 2500);
-    document.getElementById('apiNotice').style.background = '#EAF3DE';
-    document.getElementById('apiNotice').style.borderColor = '#9FE1CB';
-    document.getElementById('apiNotice').style.color = '#085041';
+    document.getElementById('keySaved').style.display = 'inline';
+    setTimeout(() => { document.getElementById('keySaved').style.display = 'none'; }, 2500);
+    setNoticeGreen();
   }
 
-  // Pre-fill if key already saved
-  if (API_KEY) {
-    document.getElementById('apiKeyInput').value = API_KEY;
-    document.getElementById('apiNotice').style.background = '#EAF3DE';
-    document.getElementById('apiNotice').style.borderColor = '#9FE1CB';
-    document.getElementById('apiNotice').style.color = '#085041';
+  function setNoticeGreen() {
+    const n = document.getElementById('apiNotice');
+    n.style.background = '#EAF3DE'; n.style.borderColor = '#9FE1CB'; n.style.color = '#085041';
   }
 
-  /* ── STATE ── */
-  let mbsData = null;
-  let updateText = '';
-  let historyLog = JSON.parse(localStorage.getItem('mbs_history') || '[]');
+  if (API_KEY) { document.getElementById('apiKeyInput').value = API_KEY; setNoticeGreen(); }
+  if (historyLog.length > 0) { renderHistory(); document.getElementById('historyBadge').textContent = '(' + historyLog.length + ')'; }
 
-  // Render history on load if it exists
-  if (historyLog.length > 0) {
-    renderHistory();
-    document.getElementById('historyBadge').textContent = '(' + historyLog.length + ')';
-  }
-
-  /* ── TABS ── */
   function switchTab(name, el) {
     document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
     document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
@@ -486,7 +317,11 @@
     document.getElementById('panel-' + name).classList.add('active');
   }
 
-  /* ── FETCH DATA ── */
+  function cc(val) {
+    if (!val || val === '—' || val === 'N/A') return 'flat';
+    return val.startsWith('+') ? 'up' : val.startsWith('-') ? 'down' : 'flat';
+  }
+
   async function fetchMBSData() {
     if (!API_KEY) { alert('Please enter your Anthropic API key first.'); return; }
     const btn = document.getElementById('refreshBtn');
@@ -504,187 +339,153 @@
         },
         body: JSON.stringify({
           model: 'claude-sonnet-4-20250514',
-          max_tokens: 1000,
+          max_tokens: 1200,
           tools: [{ type: 'web_search_20250305', name: 'web_search' }],
-          system: `You are a financial data analyst. Search the web for current MBS market data. Today is ${today}. Return ONLY valid JSON, no markdown fences, no preamble.`,
-          messages: [{ role: 'user', content: `Search for current MBS market pricing and commentary today (${today}). Check Mortgage News Daily, MBS Live, and financial news sites. Return ONLY this JSON (no markdown, no explanation):
-{"thirtyYearRate":"X.XX%","rateChangeBps":"+X bps","currentCoupon":"X.XX%","priceChange":"+X/32","marketDirection":"improving","commentary":"2-3 sentence summary of today MBS market action","keyDrivers":["driver1","driver2","driver3"],"sourceDate":"today date","sources":["source1","source2"]}` }]
+          system: `You are a financial data analyst specializing in MBS markets. Today is ${today}. Return ONLY valid JSON, no markdown, no preamble.`,
+          messages: [{ role: 'user', content: `Search for current MBS mortgage-backed securities pricing today (${today}). Check Mortgage News Daily, MBS Live, and financial news sites. Return ONLY this JSON (no markdown):
+{"thirtyYearRate":"X.XX%","rateChangeBps":"+X bps","rateTimeframe":"vs. yesterday's close","currentCoupon":"X.XX%","currentCouponName":"6.0% coupon","coupon500Price":"XX-XX","coupon500Change":"+X/32","coupon500Timeframe":"vs. yesterday's close","coupon500Label":"UMBS 5.00","coupon550Price":"XX-XX","coupon550Change":"+X/32","coupon550Timeframe":"vs. yesterday's close","coupon550Label":"UMBS 5.50","currentCouponPrice":"XX-XX","currentCouponChange":"+X/32","currentCouponTimeframe":"vs. yesterday's close","priceChange":"+X/32","priceTimeframe":"vs. yesterday's close","marketDirection":"improving","commentary":"2-3 sentence summary","keyDrivers":["d1","d2","d3"],"sourceDate":"date","sources":["s1","s2"]}` }]
         })
       });
-      if (!res.ok) {
-        const err = await res.json();
-        throw new Error(err.error?.message || 'API error ' + res.status);
-      }
+      if (!res.ok) { const e = await res.json(); throw new Error(e.error?.message || 'API error ' + res.status); }
       const data = await res.json();
-      let jsonText = (data.content || []).filter(b => b.type === 'text').map(b => b.text).join('');
-      jsonText = jsonText.replace(/```json|```/g, '').trim();
-      const fb = jsonText.indexOf('{'), lb = jsonText.lastIndexOf('}');
-      if (fb !== -1 && lb !== -1) jsonText = jsonText.slice(fb, lb + 1);
-      mbsData = JSON.parse(jsonText);
+      let j = (data.content||[]).filter(b=>b.type==='text').map(b=>b.text).join('').replace(/```json|```/g,'').trim();
+      const fb=j.indexOf('{'),lb=j.lastIndexOf('}');
+      if(fb!==-1&&lb!==-1) j=j.slice(fb,lb+1);
+      mbsData = JSON.parse(j);
       renderData(mbsData);
       addToHistory(mbsData);
       document.getElementById('generateBtn').disabled = false;
     } catch(e) {
-      showError('Error: ' + e.message);
-      console.error(e);
+      document.getElementById('commentaryContent').innerHTML = `<div class="empty-state"><span class="icon">⚠</span><p style="color:var(--color-down)">Error: ${e.message}</p></div>`;
     }
-    btn.disabled = false;
-    btn.textContent = 'Refresh data';
+    btn.disabled = false; btn.textContent = 'Refresh data';
   }
 
-  /* ── RENDER METRICS ── */
   function renderData(d) {
-    const now = new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
-    document.getElementById('lastUpdated').textContent = 'Updated ' + now;
-    document.getElementById('rate30yr').textContent = d.thirtyYearRate || '—';
-    const rateChange = document.getElementById('rateChange');
-    const bps = d.rateChangeBps || '';
-    if (bps.startsWith('+')) { rateChange.className = 'metric-sub down'; rateChange.textContent = bps + ' (rates up)'; }
-    else if (bps.startsWith('-')) { rateChange.className = 'metric-sub up'; rateChange.textContent = bps + ' (rates dn)'; }
-    else { rateChange.className = 'metric-sub flat'; rateChange.textContent = bps; }
-    document.getElementById('currentCoupon').textContent = d.currentCoupon || '—';
+    document.getElementById('lastUpdated').textContent = 'Updated ' + new Date().toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'});
+    document.getElementById('rate30yr').textContent = d.thirtyYearRate||'—';
+    const rc = document.getElementById('rateChange');
+    const bps = d.rateChangeBps||'';
+    rc.className = bps.startsWith('+') ? 'metric-sub down' : bps.startsWith('-') ? 'metric-sub up' : 'metric-sub flat';
+    rc.textContent = bps + (bps.startsWith('+') ? ' (rates up)' : bps.startsWith('-') ? ' (rates dn)' : '');
+    document.getElementById('rateTimeframe').textContent = d.rateTimeframe||'';
+    document.getElementById('currentCoupon').textContent = d.currentCoupon||'—';
+    document.getElementById('couponChangeSub').textContent = d.currentCouponName||'current coupon';
     const pc = document.getElementById('priceChange');
-    const pval = d.priceChange || '—';
-    pc.textContent = pval;
-    pc.className = pval.startsWith('+') ? 'metric-value up' : pval.startsWith('-') ? 'metric-value down' : 'metric-value flat';
-    const dir = (d.marketDirection || 'flat').toLowerCase();
-    const dirBadge = document.getElementById('directionBadge');
-    const fill = document.getElementById('trendFill');
-    if (dir === 'improving') {
-      dirBadge.innerHTML = '<span class="direction-badge direction-up">↑ Improving</span>';
-      fill.className = 'trend-fill trend-fill-up'; fill.style.width = '75%';
-    } else if (dir === 'worsening') {
-      dirBadge.innerHTML = '<span class="direction-badge direction-down">↓ Worsening</span>';
-      fill.className = 'trend-fill trend-fill-down'; fill.style.width = '25%';
-    } else {
-      dirBadge.innerHTML = '<span class="direction-badge direction-flat">→ Flat</span>';
-      fill.className = 'trend-fill trend-fill-flat'; fill.style.width = '50%';
+    pc.textContent = d.priceChange||'—';
+    pc.className = 'metric-value ' + cc(d.priceChange);
+    document.getElementById('priceTimeframe').textContent = d.priceTimeframe||'';
+
+    const dir=(d.marketDirection||'flat').toLowerCase();
+    const db=document.getElementById('directionBadge'), fill=document.getElementById('trendFill');
+    if(dir==='improving'){db.innerHTML='<span class="direction-badge direction-up">↑ Improving</span>';fill.className='trend-fill trend-fill-up';fill.style.width='75%';}
+    else if(dir==='worsening'){db.innerHTML='<span class="direction-badge direction-down">↓ Worsening</span>';fill.className='trend-fill trend-fill-down';fill.style.width='25%';}
+    else{db.innerHTML='<span class="direction-badge direction-flat">→ Flat</span>';fill.className='trend-fill trend-fill-flat';fill.style.width='50%';}
+
+    function setC(sfx,price,change,tf,lbl){
+      document.getElementById('price-'+sfx).textContent=price||'—';
+      const el=document.getElementById('change-'+sfx);
+      el.textContent=change||'—'; el.className='coupon-change '+cc(change);
+      document.getElementById('tf-'+sfx).textContent=tf||'';
+      const lb=document.getElementById('label-'+sfx); if(lb) lb.textContent=lbl||'';
     }
-    const drivers = (d.keyDrivers || []).map(k => `<span class="driver-tag">${k}</span>`).join('');
-    document.getElementById('commentaryContent').innerHTML =
-      `<p class="commentary-text">${d.commentary || ''}</p><div class="drivers">${drivers}</div>`;
-    const srcDate = d.sourceDate ? ' · ' + d.sourceDate : '';
-    document.getElementById('commentarySource').textContent = ((d.sources || []).join(', ')) + srcDate;
+    setC('500',d.coupon500Price,d.coupon500Change,d.coupon500Timeframe,d.coupon500Label);
+    setC('550',d.coupon550Price,d.coupon550Change,d.coupon550Timeframe,d.coupon550Label);
+    setC('cur',d.currentCouponPrice,d.currentCouponChange,d.currentCouponTimeframe,d.currentCouponName||'Current production coupon');
+    document.getElementById('curCouponLabel').textContent=(d.currentCouponName||'Current coupon')+' (current)';
+    document.getElementById('couponSource').textContent=d.sourceDate?'As of '+d.sourceDate:'';
+    document.getElementById('commentaryContent').innerHTML=`<p class="commentary-text">${d.commentary||''}</p><div class="drivers">${(d.keyDrivers||[]).map(k=>`<span class="driver-tag">${k}</span>`).join('')}</div>`;
+    document.getElementById('commentarySource').textContent=((d.sources||[]).join(', '))+(d.sourceDate?' · '+d.sourceDate:'');
   }
 
-  function showError(msg) {
-    document.getElementById('commentaryContent').innerHTML =
-      `<div class="empty-state"><span class="icon">⚠</span><p style="color:var(--color-down)">${msg}</p></div>`;
-  }
-
-  /* ── HISTORY ── */
   function addToHistory(d) {
-    const now = new Date();
-    const entry = {
-      timestamp: now.toLocaleString('en-US', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' }),
-      rate: d.thirtyYearRate || '—',
-      rateChange: d.rateChangeBps || '—',
-      coupon: d.currentCoupon || '—',
-      price: d.priceChange || '—',
-      direction: (d.marketDirection || 'flat').toLowerCase(),
-      commentary: d.commentary || '',
-      drivers: (d.keyDrivers || []).join(', ')
-    };
-    historyLog.unshift(entry);
-    // Keep last 100 entries
-    if (historyLog.length > 100) historyLog = historyLog.slice(0, 100);
-    localStorage.setItem('mbs_history', JSON.stringify(historyLog));
+    historyLog.unshift({
+      timestamp: new Date().toLocaleString('en-US',{month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'}),
+      rate:d.thirtyYearRate||'—', rateChange:d.rateChangeBps||'—', rateTimeframe:d.rateTimeframe||'',
+      price500:d.coupon500Price||'—', change500:d.coupon500Change||'—',
+      price550:d.coupon550Price||'—', change550:d.coupon550Change||'—',
+      priceCur:d.currentCouponPrice||'—', changeCur:d.currentCouponChange||'—',
+      priceTimeframe:d.priceTimeframe||'', direction:(d.marketDirection||'flat').toLowerCase(), commentary:d.commentary||''
+    });
+    if(historyLog.length>100) historyLog=historyLog.slice(0,100);
+    localStorage.setItem('mbs_history',JSON.stringify(historyLog));
     renderHistory();
-    document.getElementById('historyBadge').textContent = '(' + historyLog.length + ')';
+    document.getElementById('historyBadge').textContent='('+historyLog.length+')';
   }
 
   function renderHistory() {
-    const container = document.getElementById('historyContainer');
-    const count = document.getElementById('historyCount');
-    const clearBtn = document.getElementById('clearBtn');
-    count.textContent = historyLog.length + (historyLog.length === 1 ? ' entry' : ' entries');
-    if (historyLog.length === 0) {
-      container.innerHTML = '<div class="history-empty">No history yet. Fetch data to start logging entries.</div>';
-      clearBtn.style.display = 'none';
-      return;
-    }
-    clearBtn.style.display = '';
-    const rows = historyLog.map(e => {
-      const pipClass = e.direction === 'improving' ? 'pip-up' : e.direction === 'worsening' ? 'pip-down' : 'pip-flat';
-      const rateClass = e.rateChange.startsWith('+') ? 'down' : e.rateChange.startsWith('-') ? 'up' : 'flat';
-      const priceClass = e.price.startsWith('+') ? 'up' : e.price.startsWith('-') ? 'down' : 'flat';
-      const snippet = e.commentary.length > 110 ? e.commentary.slice(0, 110) + '…' : e.commentary;
+    const container=document.getElementById('historyContainer');
+    document.getElementById('historyCount').textContent=historyLog.length+(historyLog.length===1?' entry':' entries');
+    document.getElementById('clearBtn').style.display=historyLog.length?'':'none';
+    if(!historyLog.length){container.innerHTML='<div class="history-empty">No history yet. Fetch data to start logging entries.</div>';return;}
+    const rows=historyLog.map(e=>{
+      const pip=e.direction==='improving'?'pip-up':e.direction==='worsening'?'pip-down':'pip-flat';
+      const snip=e.commentary.length>100?e.commentary.slice(0,100)+'…':e.commentary;
       return `<tr>
-        <td style="white-space:nowrap; color:var(--text-secondary);">${e.timestamp}</td>
-        <td>${e.rate}</td>
-        <td class="${rateClass}">${e.rateChange}</td>
-        <td>${e.coupon}</td>
-        <td class="${priceClass}">${e.price}</td>
-        <td><span class="dir-pip ${pipClass}"></span>${e.direction.charAt(0).toUpperCase() + e.direction.slice(1)}</td>
-        <td class="commentary-cell">${snippet}</td>
+        <td style="white-space:nowrap;color:var(--text-secondary);">${e.timestamp}</td>
+        <td>${e.rate}<br><span style="color:var(--text-tertiary);font-size:10px;">${e.rateTimeframe}</span></td>
+        <td class="${cc(e.rateChange)}">${e.rateChange}</td>
+        <td>${e.price500}<br><span class="${cc(e.change500)}" style="font-size:10px;">${e.change500}</span></td>
+        <td>${e.price550}<br><span class="${cc(e.change550)}" style="font-size:10px;">${e.change550}</span></td>
+        <td>${e.priceCur}<br><span class="${cc(e.changeCur)}" style="font-size:10px;">${e.changeCur}</span></td>
+        <td><span class="dir-pip ${pip}"></span>${e.direction.charAt(0).toUpperCase()+e.direction.slice(1)}</td>
+        <td class="commentary-cell">${snip}</td>
       </tr>`;
     }).join('');
-    container.innerHTML = `<div class="table-scroll">
-      <table class="history-table">
-        <thead><tr>
-          <th>Time</th><th>30yr rate</th><th>Change</th><th>Coupon</th><th>Price chg</th><th>Direction</th><th>Commentary</th>
-        </tr></thead>
-        <tbody>${rows}</tbody>
-      </table>
-    </div>`;
+    container.innerHTML=`<div class="table-scroll"><table class="history-table"><thead><tr><th>Time</th><th>30yr rate</th><th>Chg</th><th>5.00% cpn</th><th>5.50% cpn</th><th>Curr cpn</th><th>Direction</th><th>Commentary</th></tr></thead><tbody>${rows}</tbody></table></div>`;
   }
 
   function clearHistory() {
-    if (!confirm('Clear all history entries? This cannot be undone.')) return;
-    historyLog = [];
-    localStorage.removeItem('mbs_history');
-    renderHistory();
-    document.getElementById('historyBadge').textContent = '';
+    if(!confirm('Clear all history entries? This cannot be undone.')) return;
+    historyLog=[]; localStorage.removeItem('mbs_history'); renderHistory();
+    document.getElementById('historyBadge').textContent='';
   }
 
-  /* ── CLIENT UPDATE GENERATOR ── */
   async function generateUpdate() {
-    if (!mbsData || !API_KEY) return;
-    const btn = document.getElementById('generateBtn');
-    btn.disabled = true;
-    btn.innerHTML = '<span class="spinner"></span>Generating...';
-    const outputEl = document.getElementById('updateOutput');
-    outputEl.style.display = 'block';
-    outputEl.textContent = 'Generating your update...';
-    const audienceMap = { clients: 'retail mortgage clients', partners: 'business partners', brokers: 'mortgage brokers', investors: 'real estate investors' };
-    const toneMap = { professional: 'professional and informative', concise: 'concise with bullet points', detailed: 'detailed with analysis', casual: 'conversational and approachable' };
-    const formatMap = { email: 'email (include a subject line)', text: 'short SMS/text message under 160 chars', slack: 'Slack/Teams message with brief formatting' };
-    const audience = document.getElementById('audience').value;
-    const tone = document.getElementById('tone').value;
-    const format = document.getElementById('format').value;
+    if(!mbsData||!API_KEY) return;
+    const btn=document.getElementById('generateBtn');
+    btn.disabled=true; btn.innerHTML='<span class="spinner"></span>Generating...';
+    const out=document.getElementById('updateOutput');
+    out.style.display='block'; out.textContent='Generating your update...';
+    const aMap={clients:'retail mortgage clients',partners:'business partners',brokers:'mortgage brokers',investors:'real estate investors'};
+    const tMap={professional:'professional and informative',concise:'concise with bullet points',detailed:'detailed with analysis',casual:'conversational and approachable'};
+    const fMap={email:'email (include a subject line)',text:'short SMS/text message under 160 chars',slack:'Slack/Teams message with brief formatting'};
+    const a=document.getElementById('audience').value, t=document.getElementById('tone').value, f=document.getElementById('format').value;
     try {
-      const res = await fetch('https://api.anthropic.com/v1/messages', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'x-api-key': API_KEY,
-          'anthropic-version': '2023-06-01',
-          'anthropic-dangerous-direct-browser-access': 'true'
-        },
-        body: JSON.stringify({
-          model: 'claude-sonnet-4-20250514',
-          max_tokens: 1000,
-          system: 'You are a mortgage market analyst writing client communications. Write clearly and professionally.',
-          messages: [{ role: 'user', content: `Write a ${formatMap[format]} for ${audienceMap[audience]} in a ${toneMap[tone]} tone using this MBS data:\n\n30-yr Fixed: ${mbsData.thirtyYearRate} (${mbsData.rateChangeBps})\nMBS Price Change: ${mbsData.priceChange}\nDirection: ${mbsData.marketDirection}\nCommentary: ${mbsData.commentary}\nKey Drivers: ${(mbsData.keyDrivers||[]).join(', ')}\nAs of: ${mbsData.sourceDate}` }]
+      const res=await fetch('https://api.anthropic.com/v1/messages',{
+        method:'POST',
+        headers:{'Content-Type':'application/json','x-api-key':API_KEY,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
+        body:JSON.stringify({
+          model:'claude-sonnet-4-20250514', max_tokens:1000,
+          system:'You are a mortgage market analyst writing client communications. Write clearly and professionally.',
+          messages:[{role:'user',content:`Write a ${fMap[f]} for ${aMap[a]} in a ${tMap[t]} tone using this MBS data:
+
+30-yr Fixed Rate: ${mbsData.thirtyYearRate} (${mbsData.rateChangeBps} ${mbsData.rateTimeframe})
+MBS Coupon Prices:
+  - 5.00% coupon: ${mbsData.coupon500Price} (${mbsData.coupon500Change} ${mbsData.coupon500Timeframe})
+  - 5.50% coupon: ${mbsData.coupon550Price} (${mbsData.coupon550Change} ${mbsData.coupon550Timeframe})
+  - ${mbsData.currentCouponName||'Current coupon'}: ${mbsData.currentCouponPrice} (${mbsData.currentCouponChange} ${mbsData.currentCouponTimeframe})
+Market Direction: ${mbsData.marketDirection}
+Commentary: ${mbsData.commentary}
+Key Drivers: ${(mbsData.keyDrivers||[]).join(', ')}
+As of: ${mbsData.sourceDate}
+
+Always include the timeframe (e.g. "vs. yesterday's close") when citing any price or rate changes.`}]
         })
       });
-      const data = await res.json();
-      updateText = (data.content || []).filter(b => b.type === 'text').map(b => b.text).join('');
-      outputEl.textContent = updateText;
-      document.getElementById('updateActions').style.display = 'flex';
-    } catch(e) {
-      outputEl.textContent = 'Failed to generate update: ' + e.message;
-    }
-    btn.disabled = false;
-    btn.textContent = 'Regenerate ↗';
+      const data=await res.json();
+      updateText=(data.content||[]).filter(b=>b.type==='text').map(b=>b.text).join('');
+      out.textContent=updateText;
+      document.getElementById('updateActions').style.display='flex';
+    } catch(e) { out.textContent='Failed to generate update: '+e.message; }
+    btn.disabled=false; btn.textContent='Regenerate ↗';
   }
 
   function copyUpdate() {
-    if (!updateText) return;
-    navigator.clipboard.writeText(updateText).then(() => {
-      const msg = document.getElementById('copiedMsg');
-      msg.style.display = 'inline';
-      setTimeout(() => { msg.style.display = 'none'; }, 2000);
+    if(!updateText) return;
+    navigator.clipboard.writeText(updateText).then(()=>{
+      const m=document.getElementById('copiedMsg'); m.style.display='inline';
+      setTimeout(()=>{m.style.display='none';},2000);
     });
   }
 </script>
